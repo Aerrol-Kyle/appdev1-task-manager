@@ -1,99 +1,146 @@
-.app-container {
-  font-family: Arial, sans-serif;
-  margin: 0 auto;
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Body */
+body {
+  background-color: #f7f8fa;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
+  padding-top: 20rem; /* Increased padding-top for extra space above */
+  overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+/* Header */
+header {
+  width: 100%;
   max-width: 800px;
-  background-color: #f4f7fa;
-  border-radius: 10px;
+  margin-top: 20px; /* Adds more space at the top */
+  margin-bottom: 20px;
   text-align: center;
 }
+
 
 h1 {
-  color: #333;
-  font-size: 2em;
-  margin-bottom: 20px;
+  font-size: 2.2rem;
+  color: #222;
+  margin-bottom: 10px;
 }
 
+h2 {
+  color: #555;
+  margin-bottom: 10px;
+} 
+h3 {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* Error Message */
 .error {
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 15px;
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  animation: fadeIn 0.6s ease;
 }
 
+/* Form Styling */
 .add-task-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto; /* Centers the form */
 }
 
-.input-field, .textarea-field {
-  padding: 10px;
-  font-size: 1em;
-  border-radius: 5px;
+.input-field,
+.textarea-field {
+  width: 100%;
+  padding: 12px;
   border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.input-field:focus, .textarea-field:focus {
+.input-field:focus,
+.textarea-field:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
   outline: none;
-  border-color: #007BFF;
 }
 
 .add-btn {
-  padding: 10px 20px;
-  background-color: #007BFF;
-  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background-color: #007bff;
+  color: #fff;
   border: none;
-  cursor: pointer;
-  font-size: 1.1em;
   border-radius: 5px;
+  padding: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .add-btn:hover {
   background-color: #0056b3;
+  transform: scale(1.03);
 }
 
-.task-lists-container {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
+/* Task List Styling */
 .task-list {
-  list-style-type: none;
-  padding: 0;
+  list-style: none;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
 }
 
 .task-item {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
-  margin: 10px 0;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  transition: background-color 0.3s ease;
-}
-
-.task-item.pending {
-  background-color: #fff3cd;
+  margin-bottom: 15px;
+  animation: fadeIn 0.6s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .task-item.completed {
-  background-color: #d3f9d8;
-  text-decoration: line-through;
+  border-left: 5px solid #28a745;
+}
+
+.task-item.pending {
+  border-left: 5px solid #ffc107;
 }
 
 .status-btn, .delete-btn {
   margin-top: 10px;
   padding: 8px 12px;
-  border-radius: 5px;
+  font-size: 0.9rem;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
+  color: #fff;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .status-btn {
   background-color: #28a745;
-  color: white;
 }
 
 .status-btn:hover {
@@ -102,9 +149,45 @@ h1 {
 
 .delete-btn {
   background-color: #dc3545;
-  color: white;
 }
 
 .delete-btn:hover {
   background-color: #c82333;
 }
+
+/* SignOut Button */
+.signout {
+  margin-top: 10px;
+  display: inline-block;
+  font-size: 0.9rem;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.signout:hover {
+  text-decoration: underline;
+}
+
+/* Keyframe Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fix for scrolling and header visibility */
+header, .add-task-form, .task-list {
+  margin-bottom: 20px; /* Ensures proper spacing */
+}
+
+.task-item {
+  margin-bottom: 20px; /* Space between tasks */
+}
+
+

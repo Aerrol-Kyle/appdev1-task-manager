@@ -3,13 +3,14 @@ import { MdAdd } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { db } from '../firebase.js';
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import SignOut from './SignOut.jsx';
 
-const TaskLists = () => {
+const TaskLists = ({ user }) => {
     const [loading, setLoading] = useState(false);
     const [tasks, setTasks] = useState([]);
-    const [title, setTitle] = useState(""); 
-    const [description, setDescription] = useState(""); 
-    const [error, setError] = useState(""); 
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [error, setError] = useState("");
 
     const fetchTask = async () => {
         setLoading(true);
@@ -18,12 +19,13 @@ const TaskLists = () => {
             const querySnapshot = await getDocs(collectionRef);
             const taskList = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
-                ...doc.data()
+                ...doc.data(),
             }));
             setTasks(taskList);
-            setLoading(false);
         } catch (error) {
             console.error(error.message);
+            setError("Failed to load tasks.");
+        } finally {
             setLoading(false);
         }
     };
@@ -37,8 +39,8 @@ const TaskLists = () => {
                 await updateDoc(taskRef, {
                     status: status === "pending" ? "completed" : "pending",
                 });
-                setTasks(prevTasks => 
-                    prevTasks.map(t => 
+                setTasks((prevTasks) =>
+                    prevTasks.map((t) =>
                         t.id === id ? { ...t, status: status === "pending" ? "completed" : "pending" } : t
                     )
                 );
@@ -51,7 +53,7 @@ const TaskLists = () => {
             const taskRef = doc(db, "tasks", id);
             try {
                 await deleteDoc(taskRef);
-                setTasks(prevTasks => prevTasks.filter(task => task.id !== id)); 
+                setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
             } catch (error) {
                 console.error("Error deleting task: ", error);
             }
@@ -61,9 +63,9 @@ const TaskLists = () => {
             <li className={`task-item ${status === "completed" ? "completed" : "pending"}`}>
                 <p><strong>Title:</strong> {title}</p>
                 <p><strong>Description:</strong> {description}</p>
-                <p><strong>Status:</strong> {status}</p> 
+                <p><strong>Status:</strong> {status}</p>
                 <button onClick={handleStatusChange} className="status-btn">
-                    {status === "pending" ? "Mark as Completed" : "Mark as Pending"} 
+                    {status === "pending" ? "Mark as Completed" : "Mark as Pending"}
                 </button>
                 <button onClick={handleDelete} className="delete-btn">
                     <MdDelete /> Delete
@@ -87,9 +89,10 @@ const TaskLists = () => {
             setTitle("");
             setDescription("");
             setError("");
-            fetchTask(); 
+            fetchTask(); // Optional: refresh tasks after adding one
         } catch (error) {
             console.error("Error adding task: ", error);
+            setError("Failed to add task.");
         }
     };
 
@@ -101,8 +104,10 @@ const TaskLists = () => {
 
     return (
         <div className="task-lists-container">
+            <h1>Todo React App</h1>
             <h2>Task List</h2>
-            
+            <h3>Welcome, {user.displayName || user.email} </h3>
+
             {error && <p className="error">{error}</p>}
 
             <form onSubmit={handleAddTask} className="add-task-form">
@@ -125,10 +130,12 @@ const TaskLists = () => {
             </form>
 
             <ul className="task-list">
-                {tasks.map(task => (
+                {tasks.map((task) => (
                     <TaskItem key={task.id} task={task} />
                 ))}
             </ul>
+
+            <SignOut />
         </div>
     );
 };
